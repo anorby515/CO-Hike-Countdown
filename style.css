@@ -6,52 +6,167 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
 }
 
-.overlay {
-  position: fixed;
+/* ---------- Swipe deck ---------- */
+
+/*
+  One horizontally scrolling track, one full-screen slide per event, ordered
+  soonest first. Scroll snapping gives native swipe on touch and works with a
+  trackpad, the arrow keys, and the dots below.
+*/
+.deck {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+}
+
+.deck::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+/*
+  Each slide carries its own backdrop. Sticky + a negative margin keeps the
+  backdrop still if a slide has to scroll vertically on a short screen, without
+  background-attachment: fixed (which iOS Safari ignores).
+*/
+.slide-bg {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  margin-bottom: -100vh;
+  margin-bottom: -100dvh;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.slide-bg::after {
+  content: '';
+  position: absolute;
   inset: 0;
+}
+
+/*
+  Vegas: the concert shot, kept dark enough that the white type stays readable
+  while the logo at the top and the player at the bottom still show through.
+  The file is only 415x739, so it is shown whole rather than cropped to fill,
+  which would both upscale it and cut off the logo and the player. Its own
+  edges are black, so the letterboxing is invisible against the black page.
+*/
+.slide--vegas .slide-bg {
+  background-image: url('images/metallica-sphere.png');
+  background-size: contain;
+}
+
+.slide--vegas .slide-bg::after {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.25) 15%,
+    rgba(0, 0, 0, 0.5) 32%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.3) 85%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+}
+
+/* Steamboat: the original mountain photo and green wash. */
+.slide--steamboat .slide-bg {
+  background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80');
+  background-color: #0a1e14;
+}
+
+.slide--steamboat .slide-bg::after {
   background: linear-gradient(
     135deg,
     rgba(10, 30, 20, 0.7) 0%,
     rgba(20, 50, 40, 0.5) 50%,
     rgba(10, 25, 15, 0.7) 100%
   );
-  z-index: 1;
 }
+
+/* ---------- Slide content ---------- */
 
 .content {
   position: relative;
   z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 2rem;
+  /* Bottom padding clears the swipe hint and the pager below it. */
+  padding: clamp(2rem, 6vw, 4rem) 1.5rem clamp(8rem, 18vw, 10rem);
 }
 
 .title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(2.4rem, 8vw, 5.5rem);
   color: #fff;
-  letter-spacing: 0.08em;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.1rem, 3.4vw, 2rem);
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  margin-bottom: 0.35rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+}
+
+.event-when {
+  font-size: clamp(0.7rem, 2.2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.78);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  margin-top: 0.75rem;
+  margin-bottom: 1.75rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
 }
 
 .countdown {
-  display: flex;
-  gap: clamp(1rem, 4vw, 3rem);
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.4rem, 2vw, 1.75rem);
+  width: 100%;
+  max-width: 880px;
 }
 
 .time-block {
@@ -63,8 +178,8 @@ body {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
-  padding: clamp(1rem, 3vw, 2rem) clamp(1.2rem, 3.5vw, 2.5rem);
-  min-width: clamp(80px, 18vw, 160px);
+  padding: clamp(0.7rem, 2vw, 1.6rem) clamp(0.3rem, 1.5vw, 1.5rem);
+  min-width: 0;
   transition: transform 0.2s ease;
 }
 
@@ -74,14 +189,14 @@ body {
 
 .time-value {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   color: #fff;
   line-height: 1;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .time-label {
-  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-size: clamp(0.6rem, 1.7vw, 0.9rem);
   color: rgba(255, 255, 255, 0.75);
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -90,23 +205,177 @@ body {
 }
 
 .verified-badge {
-  display: inline-block;
-  margin-top: 2.5rem;
-  padding: 0.6rem 2rem;
-  background: none;
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
   color: #34d399;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(2rem, 6.5vw, 4.5rem);
   letter-spacing: 0.12em;
   text-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
-}
-
-@keyframes pulse {
-  0%, 100% { text-shadow: 0 4px 20px rgba(16, 185, 129, 0.4); }
-  50% { text-shadow: 0 4px 30px rgba(16, 185, 129, 0.7); }
 }
 
 /* Arrived state */
 .countdown.arrived .time-value {
   color: #34d399;
+}
+
+/* ---------- Pager ---------- */
+
+.pager {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.pager-dot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.pager-dot::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  transition: transform 0.25s ease;
+}
+
+.pager-dot[aria-current='true'] {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.pager-dot[aria-current='true']::before {
+  transform: scale(1.3);
+}
+
+.pager-dot:focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
+
+/*
+  Hide the names on very narrow screens; the dots still show the count. Clipped
+  rather than display: none so the buttons keep their accessible names.
+*/
+@media (max-width: 380px) {
+  .pager-dot-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pager-dot {
+    padding: 0.4rem 0.5rem;
+  }
+}
+
+/* ---------- Swipe hint ---------- */
+
+.swipe-hint {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.swipe-hint-arrow {
+  font-size: 1.6rem;
+  line-height: 1;
+  animation: nudge 1.6s ease-in-out infinite;
+}
+
+/* Hidden once you are past the first slide. */
+.swipe-hint.is-hidden {
+  opacity: 0;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(5px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipe-hint-arrow {
+    animation: none;
+  }
+  .deck {
+    scroll-behavior: auto;
+  }
+}
+
+/*
+  On a landscape screen the swipe hint would land on the player at the bottom of
+  the Vegas shot, so move it out to the empty right-hand side.
+*/
+@media (min-aspect-ratio: 1 / 1) {
+  .content {
+    padding-bottom: clamp(6rem, 14vh, 10rem);
+  }
+
+  /*
+    Landscape type is sized against viewport height, not width: a short, wide
+    window has plenty of width but is exactly where the stack would otherwise
+    run past the bottom of the slide.
+  */
+  .eyebrow {
+    font-size: clamp(1.1rem, 2.6vh, 2rem);
+  }
+
+  .title {
+    font-size: clamp(2.4rem, 9vh, 5.5rem);
+  }
+
+  .time-value {
+    font-size: clamp(2rem, 6.5vh, 4rem);
+  }
+
+  .verified-badge {
+    font-size: clamp(2rem, 7vh, 4.5rem);
+    margin-top: clamp(1rem, 3vh, 2.5rem);
+  }
+
+  .swipe-hint {
+    left: auto;
+    right: clamp(1rem, 3vw, 2.5rem);
+    transform: none;
+    bottom: calc(1.7rem + env(safe-area-inset-bottom, 0px));
+  }
 }

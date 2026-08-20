@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hike-co-2026-v1';
+const CACHE_NAME = 'countdown-2027-v2';
 const ASSETS = [
   './',
   './index.html',
