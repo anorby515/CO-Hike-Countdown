@@ -73,30 +73,28 @@ body {
   inset: 0;
 }
 
-/* Vegas: the concert shot, kept dark so the white type stays readable. */
+/*
+  Vegas: the concert shot, kept dark enough that the white type stays readable
+  while the logo at the top and the player at the bottom still show through.
+  The file is only 415x739, so it is shown whole rather than cropped to fill,
+  which would both upscale it and cut off the logo and the player. Its own
+  edges are black, so the letterboxing is invisible against the black page.
+*/
 .slide--vegas .slide-bg {
-  background-image: url('images/metallica-sphere.jpg');
+  background-image: url('images/metallica-sphere.png');
+  background-size: contain;
 }
 
 .slide--vegas .slide-bg::after {
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.55) 0%,
-    rgba(0, 0, 0, 0.2) 30%,
-    rgba(0, 0, 0, 0.4) 65%,
-    rgba(0, 0, 0, 0.85) 100%
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.25) 15%,
+    rgba(0, 0, 0, 0.5) 32%,
+    rgba(0, 0, 0, 0.5) 70%,
+    rgba(0, 0, 0, 0.3) 85%,
+    rgba(0, 0, 0, 0.75) 100%
   );
-}
-
-/*
-  The concert shot is portrait, so it fills a phone but would crop to a thin
-  middle band on a landscape screen. Show it whole there instead; its own edges
-  are black, so it blends into the black behind it.
-*/
-@media (min-aspect-ratio: 1 / 1) {
-  .slide--vegas .slide-bg {
-    background-size: contain;
-  }
 }
 
 /* Steamboat: the original mountain photo and green wash. */
@@ -134,10 +132,12 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(2.4rem, 8vw, 5.5rem);
   color: #fff;
+  text-transform: uppercase;
   letter-spacing: 0.06em;
   line-height: 1.05;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-  max-width: 16ch;
+  max-width: 22ch;
+  text-wrap: balance;
 }
 
 .eyebrow {
@@ -338,5 +338,44 @@ body {
   }
   .deck {
     scroll-behavior: auto;
+  }
+}
+
+/*
+  On a landscape screen the swipe hint would land on the player at the bottom of
+  the Vegas shot, so move it out to the empty right-hand side.
+*/
+@media (min-aspect-ratio: 1 / 1) {
+  .content {
+    padding-bottom: clamp(6rem, 14vh, 10rem);
+  }
+
+  /*
+    Landscape type is sized against viewport height, not width: a short, wide
+    window has plenty of width but is exactly where the stack would otherwise
+    run past the bottom of the slide.
+  */
+  .eyebrow {
+    font-size: clamp(1.1rem, 2.6vh, 2rem);
+  }
+
+  .title {
+    font-size: clamp(2.4rem, 9vh, 5.5rem);
+  }
+
+  .time-value {
+    font-size: clamp(2rem, 6.5vh, 4rem);
+  }
+
+  .verified-badge {
+    font-size: clamp(2rem, 7vh, 4.5rem);
+    margin-top: clamp(1rem, 3vh, 2.5rem);
+  }
+
+  .swipe-hint {
+    left: auto;
+    right: clamp(1rem, 3vw, 2.5rem);
+    transform: none;
+    bottom: calc(1.7rem + env(safe-area-inset-bottom, 0px));
   }
 }
