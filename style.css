@@ -4,14 +4,10 @@
   box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
-  overflow: hidden;
-}
-
 body {
   font-family: 'Inter', sans-serif;
   background: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+  background-color: #0a1e14;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,24 +30,42 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 2rem;
+  padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2.5rem, 7vw, 4.5rem);
+}
+
+.event {
+  width: 100%;
 }
 
 .title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(2.2rem, 7vw, 5rem);
   color: #fff;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  line-height: 1.05;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  margin-bottom: 2rem;
+}
+
+.event-when {
+  font-size: clamp(0.75rem, 2.2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  margin-top: 0.75rem;
+  margin-bottom: 1.75rem;
 }
 
 .countdown {
-  display: flex;
-  gap: clamp(1rem, 4vw, 3rem);
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.4rem, 2vw, 1.75rem);
+  max-width: 880px;
+  margin: 0 auto;
 }
 
 .time-block {
@@ -63,8 +77,8 @@ body {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
-  padding: clamp(1rem, 3vw, 2rem) clamp(1.2rem, 3.5vw, 2.5rem);
-  min-width: clamp(80px, 18vw, 160px);
+  padding: clamp(0.7rem, 2vw, 1.6rem) clamp(0.3rem, 1.5vw, 1.5rem);
+  min-width: 0;
   transition: transform 0.2s ease;
 }
 
@@ -74,14 +88,14 @@ body {
 
 .time-value {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 5.5rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   color: #fff;
   line-height: 1;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .time-label {
-  font-size: clamp(0.7rem, 2vw, 1rem);
+  font-size: clamp(0.6rem, 1.7vw, 0.9rem);
   color: rgba(255, 255, 255, 0.75);
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -91,12 +105,11 @@ body {
 
 .verified-badge {
   display: inline-block;
-  margin-top: 2.5rem;
   padding: 0.6rem 2rem;
   background: none;
   color: #34d399;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(2.2rem, 7vw, 5rem);
   letter-spacing: 0.12em;
   text-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
 }
