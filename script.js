@@ -9,6 +9,8 @@
 const countdowns = [...document.querySelectorAll('.countdown')].map((el) => ({
   el,
   target: new Date(el.dataset.target),
+  // Minimum digits for the day count; "1" leaves it unpadded.
+  padDays: Number(el.dataset.padDays) || 3,
   values: {
     days: el.querySelector('[data-unit="days"]'),
     hours: el.querySelector('[data-unit="hours"]'),
@@ -22,11 +24,11 @@ function pad(num, size) {
 }
 
 function render(countdown, now) {
-  const { el, target, values } = countdown;
+  const { el, target, values, padDays } = countdown;
   const diff = target - now;
 
   if (diff <= 0) {
-    values.days.textContent = '000';
+    values.days.textContent = pad(0, padDays);
     values.hours.textContent = '00';
     values.minutes.textContent = '00';
     values.seconds.textContent = '00';
@@ -34,7 +36,7 @@ function render(countdown, now) {
     return;
   }
 
-  values.days.textContent = pad(Math.floor(diff / (1000 * 60 * 60 * 24)), 3);
+  values.days.textContent = pad(Math.floor(diff / (1000 * 60 * 60 * 24)), padDays);
   values.hours.textContent = pad(Math.floor((diff / (1000 * 60 * 60)) % 24), 2);
   values.minutes.textContent = pad(Math.floor((diff / (1000 * 60)) % 60), 2);
   values.seconds.textContent = pad(Math.floor((diff / 1000) % 60), 2);
