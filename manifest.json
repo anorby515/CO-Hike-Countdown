@@ -4,8 +4,8 @@
   "description": "Countdowns to Las Vegas / Metallica at the Sphere (Feb 25, 2027) and Steamboat Hiking (Aug 5, 2027)",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#1a3a2a",
-  "theme_color": "#1a3a2a",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "icons/icon-192.png",
