@@ -183,8 +183,10 @@ body {
   transition: transform 0.2s ease;
 }
 
-.time-block:hover {
-  transform: translateY(-4px);
+@media (hover: hover) and (pointer: fine) {
+  .time-block:hover {
+    transform: translateY(-4px);
+  }
 }
 
 .time-value {
@@ -192,6 +194,7 @@ body {
   font-size: clamp(2rem, 6vw, 4rem);
   color: #fff;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -211,6 +214,31 @@ body {
   font-size: clamp(2rem, 6.5vw, 4.5rem);
   letter-spacing: 0.12em;
   text-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+}
+
+/*
+  Bare variant: DDD : HH : MM : SS on one line, no cards and no labels.
+  Baseline alignment keeps the digits sitting on a common line.
+*/
+.countdown--bare {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(0.15rem, 1vw, 0.5rem);
+  white-space: nowrap;
+}
+
+.countdown--bare .time-value {
+  font-size: clamp(2.25rem, 10vw, 5rem);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+}
+
+.time-sep {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.25rem, 10vw, 5rem);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
 }
 
 /* Arrived state */
@@ -339,6 +367,12 @@ body {
   .deck {
     scroll-behavior: auto;
   }
+}
+
+/* The Vegas clock sits low on the frame rather than centred. */
+.slide--vegas .content {
+  justify-content: flex-end;
+  padding-bottom: clamp(9rem, 28vh, 18rem);
 }
 
 /*

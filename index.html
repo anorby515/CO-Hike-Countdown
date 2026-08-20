@@ -20,26 +20,19 @@
     <section class="slide slide--vegas" aria-label="Las Vegas, Metallica at the Sphere">
       <div class="slide-bg"></div>
       <div class="content">
-        <h1 class="eyebrow">Las Vegas</h1>
-        <p class="event-when">Thursday, February 25, 2027 &mdash; 2:00 PM Las Vegas time</p>
-
-        <div class="countdown" data-target="2027-02-25T22:00:00Z">
-          <div class="time-block">
-            <span class="time-value" data-unit="days">000</span>
-            <span class="time-label">Days</span>
-          </div>
-          <div class="time-block">
-            <span class="time-value" data-unit="hours">00</span>
-            <span class="time-label">Hours</span>
-          </div>
-          <div class="time-block">
-            <span class="time-value" data-unit="minutes">00</span>
-            <span class="time-label">Minutes</span>
-          </div>
-          <div class="time-block">
-            <span class="time-value" data-unit="seconds">00</span>
-            <span class="time-label">Seconds</span>
-          </div>
+        <!--
+          Vegas is the photo plus the clock and nothing else: no heading, no
+          labels, no card around the digits. data-pad-days="1" leaves the day
+          count unpadded.
+        -->
+        <div class="countdown countdown--bare" data-target="2027-02-25T22:00:00Z" data-pad-days="1">
+          <span class="time-value" data-unit="days">0</span>
+          <span class="time-sep">:</span>
+          <span class="time-value" data-unit="hours">00</span>
+          <span class="time-sep">:</span>
+          <span class="time-value" data-unit="minutes">00</span>
+          <span class="time-sep">:</span>
+          <span class="time-value" data-unit="seconds">00</span>
         </div>
       </div>
     </section>
